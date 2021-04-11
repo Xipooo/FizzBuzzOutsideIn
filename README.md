@@ -134,3 +134,41 @@ namespace FizzBuzz.WebApi.Controllers
 ### Refactor
 
 * Rename `TestNameAsync()` to `Should_Return_StatusCode_200_When_Positive_Number_Is_Passed_Async()`
+
+## Phase 5
+
+* Add the following test:
+
+```c#
+[Fact]
+public async Task TestNameAsync()
+{
+    //GIVEN the service is running
+    var hostBuilder = new WebHostBuilder()
+        .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location)).UseStartup<Startup>();
+    var testServer = new TestServer(hostBuilder);
+    var client = testServer.CreateClient();
+
+    //WHEN a GET request is submitted to api/fizzbuzz with multiple numbers for parameters 
+    var result = await client.GetAsync("/api/fizzbuzz/1/1");
+    
+    //THEN the response should return a status code 404.
+    result.StatusCode.Should().Be(404);
+}
+```
+
+* It will pass
+
+### Refactor 
+
+* Rename test to `Should_Return_StatusCode_404_When_Multiple_Parameters_Passed_Async()`
+* Refactor `FizzBuzz_Route` with the following private field:
+
+```c#
+private HttpClient client => 
+    new TestServer(new WebHostBuilder()
+        .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location)).UseStartup<Startup>()).CreateClient();
+```
+
+* Remove setup code from the tests
+* Rerun tests to validate green
