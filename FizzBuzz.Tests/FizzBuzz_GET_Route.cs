@@ -10,9 +10,9 @@ using System.Net.Http;
 
 namespace FizzBuzz.Tests
 {
-    public class FizzBuzz_Route
+    public class FizzBuzz_GET_Route
     {
-        private HttpClient client => 
+        private HttpClient client =>
             new TestServer(new WebHostBuilder()
                 .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location)).UseStartup<Startup>()).CreateClient();
 
@@ -44,9 +44,21 @@ namespace FizzBuzz.Tests
             //GIVEN the service is running
             //WHEN a GET request is submitted to api/fizzbuzz with multiple numbers for parameters 
             var result = await client.GetAsync("/api/fizzbuzz/1/1");
-            
+
             //THEN the response should return a status code 404.
             result.StatusCode.Should().Be(404);
         }
+
+        [Fact]
+        public async Task Should_Return_StatusCode_400_When_Passed_Negative_Number_Async()
+        {
+            //GIVEN the service is running 
+            //WHEN a GET request is submitted to api/fizzbuzz with a negative number for a parameter
+            var result = await client.GetAsync("/api/fizzbuzz/-1");
+
+            //THEN the response should return a status code 400.
+            result.StatusCode.Should().Be(400);
+        }
     }
 }
+
