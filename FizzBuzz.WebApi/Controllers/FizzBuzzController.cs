@@ -21,5 +21,10 @@ namespace FizzBuzz.WebApi.Controllers
             if (result == "Invalid") return BadRequest();
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult Get(){
+            return NotFound("Error: A parameter is required.");
+        }
     }
 }

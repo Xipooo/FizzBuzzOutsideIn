@@ -59,6 +59,29 @@ namespace FizzBuzz.Tests
             //THEN the response should return a status code 400.
             result.StatusCode.Should().Be(400);
         }
+
+        [Fact]
+        public async Task Should_Return_StatusCode_400_When_Passed_Non_Number_Async()
+        {
+            //GIVEN the service is running 
+            //WHEN a GET request is submitted to api/fizzbuzz with a non-number for a parameter
+            var result = await client.GetAsync("/api/fizzbuzz/non-number");
+
+            //THEN the response should return a status code 400
+            result.StatusCode.Should().Be(400);
+        }
+
+        [Fact]
+        public async Task Should_Return_Error_Message_When_Passed_No_Parameter_Async()
+        {
+            //GIVEN the service is running
+            //WHEN a GET request is submitted to api/fizzbuzz with no parameter
+            var response = await client.GetAsync("/api/fizzbuzz");
+            var result = await response.Content.ReadAsStringAsync();
+
+            //THEN the response body should contain an error message indicating a parameter is required
+            result.Should().Be("Error: A parameter is required.");
+        }
     }
 }
 

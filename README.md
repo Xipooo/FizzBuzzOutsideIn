@@ -311,3 +311,51 @@ namespace FizzBuzz.WebApi.Services
 ```
 
 * Run all tests to validate passing
+
+## Phase 7
+
+### Red
+
+* Add the following tests to `FizzBuzz_GET_Route`:
+
+```c#
+[Fact]
+public async Task Should_Return_StatusCode_400_When_Passed_Non_Number_Async()
+{
+    //GIVEN the service is running 
+    //WHEN a GET request is submitted to api/fizzbuzz with a non-number for a parameter
+    var result = await client.GetAsync("/api/fizzbuzz/non-number");
+    
+    //THEN the response should return a status code 400
+    result.StatusCode.Should().Be(400);
+}
+
+[Fact]
+public async Task TestNameAsync()
+{
+    //GIVEN the service is running
+    //WHEN a GET request is submitted to api/fizzbuzz with no parameter
+    var response = await client.GetAsync("/api/fizzbuzz");
+    var result = await response.Content.ReadAsStringAsync();
+
+    //THEN the response body should contain an error message indicating a parameter is required
+    result.Should().Be("Error: A parameter is required.");
+}
+```
+
+### Green
+
+* Add the following code to the `FizzBuzzController`;
+
+```c#
+[HttpGet]
+public IActionResult Get(){
+    return NotFound("Error: A parameter is required.");
+}
+```
+
+### Refactor
+
+* Rename `TestNameAsync` to `Should_Return_Error_Message_When_Passed_No_Parameter_Async`
+* Rerun tests
+
