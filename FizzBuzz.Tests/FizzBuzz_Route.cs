@@ -24,7 +24,7 @@ namespace FizzBuzz.Tests
             var result = await client.GetAsync("/api/fizzbuzz");
 
             //THEN the response should return a status code 404.
-            result.StatusCode.Should().Be(200);
+            result.StatusCode.Should().Be(404);
         }
     }
 }
