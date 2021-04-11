@@ -45,3 +45,41 @@ User Stories and Acceptance Criteria:
   * GIVEN the service is running WHEN a GET request is submitted to api/fizzbuzz with multiple numbers for parameters THEN the response body should contain an error message indicating there were too many parameters
   * GIVEN the service is running WHEN a GET request is submitted to api/fizzbuzz with a negative number for the parameter THEN the response body should contain an error message indicating the value is invalid
   * GIVEN the service is running WHEN a GET request is submitted to api/fizzbuzz with a non-number for a parameter THEN the response body should contain an error message indicating the value is invalid.
+
+## Phase 3
+
+### Red/Green
+
+* Add the following code to the `UnitTest1.Test1Async()` method:
+
+  ```c#
+  namespace FizzBuzz.Tests
+  {
+      public class UnitTest1
+      {
+          [Fact]
+          public async Task Test1Async()
+          {
+              //GIVEN the service is running
+              var hostBuilder = new WebHostBuilder()
+                  .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location)).UseStartup<Startup>();
+              var testServer = new TestServer(hostBuilder);
+              var client = testServer.CreateClient();
+              
+              //WHEN a GET request is submitted to api/fizzbuzz with no parameter
+              var result = await client.GetAsync("/api/fizzbuzz");
+
+              //THEN the response should return a status code 404.
+              result.StatusCode.Should().Be(404);
+          }
+      }
+  }
+  ```
+
+* Run test - green
+
+### Refactor
+
+* Rename `UnitTest1.Test1Async()` to `FizzBuzz_Route.Should_Return_StatusCode_404_When_No_Parameter_Is_Passed()`
+* Rename `UnitTest1.cs` to `FizzBuzz_Route`
+* Change assertion to check for 200 to show test failure message
