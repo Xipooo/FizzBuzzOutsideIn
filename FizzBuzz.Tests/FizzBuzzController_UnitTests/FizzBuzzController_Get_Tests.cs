@@ -8,7 +8,7 @@ namespace FizzBuzz.Tests.FizzBuzzController_UnitTests
     public class FizzBuzzController_Get_Tests
     {
         [Fact]
-        public void Should_Call_IFizzBuzzService_GetAnswer_When_()
+        public void Should_Call_IFizzBuzzService_GetAnswer_When_Called_With_Parameter()
         {
             //Given
             var fizzBuzzServiceMock = new Mock<IFizzBuzzService>();

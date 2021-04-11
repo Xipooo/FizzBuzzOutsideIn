@@ -19,7 +19,7 @@ namespace FizzBuzz.WebApi.Controllers
         {
             var result = _fizzBuzzService.GetAnswer(number);
             if (result == "Invalid") return BadRequest();
-            return Ok();
+            return Ok(result);
         }
 
         [HttpGet]

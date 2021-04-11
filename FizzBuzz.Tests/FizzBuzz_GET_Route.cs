@@ -82,6 +82,22 @@ namespace FizzBuzz.Tests
             //THEN the response body should contain an error message indicating a parameter is required
             result.Should().Be("Error: A parameter is required.");
         }
+
+        [Theory]
+        [InlineData(15)]
+        [InlineData(30)]
+        [InlineData(45)]
+        [InlineData(60)]
+        public async Task Should_Return_FizzBuzz_When_Parameter_Is_Divisible_By_3_And_5_Async(int value)
+        {
+            //GIVEN the service is running 
+            //WHEN a GET request is submitted to api/fizzbuzz with a positive number parameter that is a multiple of 3 and 5 
+            var response = await client.GetAsync($"/api/fizzbuzz/{value}");
+            var result = await response.Content.ReadAsStringAsync();
+
+            //THEN the response body should return fizzbuzz in the body of the response.
+            result.Should().Be("FizzBuzz");
+        }
     }
 }
 

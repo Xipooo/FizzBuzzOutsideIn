@@ -210,12 +210,12 @@ using FizzBuzz.WebApi.Controllers;
 using Moq;
 using FizzBuzz.WebApi.Services;
 
-namespace FizzBuzz.Tests.FizzBuzzController_UnitTests
+namespace FizzBuzz.Tests.FizzBuzzController_CollaboratorTests
 {
     public class FizzBuzzController_Get_Tests
     {
         [Fact]
-        public void Should_Call_IFizzBuzzService_GetAnswer_When_()
+        public void Should_Call_IFizzBuzzService_GetAnswer_When_Called_With_Parameter()
         {
             //Given
             var fizzBuzzServiceMock = new Mock<IFizzBuzzService>();
@@ -359,3 +359,77 @@ public IActionResult Get(){
 * Rename `TestNameAsync` to `Should_Return_Error_Message_When_Passed_No_Parameter_Async`
 * Rerun tests
 
+## Phase 8
+
+### Red
+
+* Add the following scenario to the `FizzBuzz_GET_Route` class:
+
+```c#
+[Theory]
+[InlineData(15)]
+[InlineData(30)]
+[InlineData(45)]
+[InlineData(60)]
+public async Task TestNameAsync(int value)
+{
+    //GIVEN the service is running 
+    //WHEN a GET request is submitted to api/fizzbuzz with a positive number parameter that is a multiple of 3 and 5 
+    var response = await client.GetAsync($"/api/fizzbuzz/{value}");
+    var result = await response.Content.ReadAsStringAsync();
+
+    //THEN the response body should return fizzbuzz in the body of the response.
+    result.Should().Be("FizzBuzz");
+}
+```
+
+* Add the following test to the `FizzBuzzService_GetAnswer_Tests` class:
+
+```c#
+[Theory]
+[InlineData(15)]
+[InlineData(30)]
+[InlineData(45)]
+[InlineData(60)]
+public void TestName(int value)
+{
+    //Given
+    
+    //When
+    var result = SUT.GetAnswer(value);
+    //Then
+    result.Should().Be("FizzBuzz");
+}
+```
+
+* Run failing tests
+
+### Green
+
+* Change `FizzBuzzService.GetAnswer()` to the following code:
+  
+```c#
+public string GetAnswer(int number)
+{
+    if (number > 0 && number % 5 == 0) { return "FizzBuzz"; }
+    if (number >= 0) return number.ToString();
+    return "Invalid";
+}
+```
+
+* Change `FizzBuzzController.Get()` to the following code:
+
+```c#
+[HttpGet("{number}")]
+public IActionResult Get(int number)
+{
+    var result = _fizzBuzzService.GetAnswer(number);
+    if (result == "Invalid") return BadRequest();
+    return Ok(result);
+}
+```
+
+### Refactor
+
+* Rename `FizzBuzzService_GetAnswer_Tests.TestName` to `Should_Return_FizzBuzz_When_Parameter_Is_Divisible_By_3_And_5`
+* Rename `FizzBuzz_GET_Route.TestNameAsync` to `Should_Return_FizzBuzz_When_Parameter_Is_Divisible_By_3_And_5_Async`

@@ -35,12 +35,28 @@ namespace FizzBuzz.Tests.FizzBuzzService_UnitTests
         public void Should_Return_1_When_Parameter_Is_1()
         {
             //Given
-            
+
             //When
             var result = SUT.GetAnswer(1);
-            
+
             //Then
             result.Should().Be("1");
+        }
+
+        [Theory]
+        [InlineData(15)]
+        [InlineData(30)]
+        [InlineData(45)]
+        [InlineData(60)]
+        public void Should_Return_FizzBuzz_When_Parameter_Is_Divisible_By_3_And_5(int value)
+        {
+            //Given
+            
+            //When
+            var result = SUT.GetAnswer(value);
+
+            //Then
+            result.Should().Be("FizzBuzz");
         }
     }
 }
