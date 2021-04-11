@@ -268,18 +268,6 @@ namespace FizzBuzz.Tests.FizzBuzzService_UnitTests
         }
 
         [Fact]
-        public void Should_Return_0_When_Parameter_Is_0()
-        {
-            //Given
-
-            //When
-            var result = SUT.GetAnswer(0);
-
-            //Then
-            result.Should().Be("0");
-        }
-
-        [Fact]
         public void Should_Return_1_When_Parameter_Is_1()
         {
             //Given
@@ -433,3 +421,79 @@ public IActionResult Get(int number)
 
 * Rename `FizzBuzzService_GetAnswer_Tests.TestName` to `Should_Return_FizzBuzz_When_Parameter_Is_Divisible_By_3_And_5`
 * Rename `FizzBuzz_GET_Route.TestNameAsync` to `Should_Return_FizzBuzz_When_Parameter_Is_Divisible_By_3_And_5_Async`
+
+## Phase 9
+
+### Red
+
+* Add the following test to `FizzBuzz_GET_Route`:
+
+```c#
+[Theory]
+[InlineData(3)]
+[InlineData(6)]
+[InlineData(9)]
+[InlineData(12)]
+public async Task TestNameAsync(int value)
+{
+    //GIVEN the service is running 
+    //WHEN a GET request is submitted to api/fizzbuzz with a positive number parameter that is a multiple of just 3
+    var response = await client.GetAsync($"/api/fizzbuzz/{value}");
+    var result = await response.Content.ReadAsStringAsync();
+    
+    //THEN the response body should return fizz in the body of the response.
+    result.Should().Be("Fizz");
+}
+```
+
+* Add the following test to `FizzBuzzService_GetAnswer_Tests`:
+
+```c#
+[Theory]
+[InlineData(3)]
+[InlineData(6)]
+[InlineData(9)]
+[InlineData(12)]
+public void TestName(int value)
+{
+    //Given
+    //When
+    var result = SUT.GetAnswer(value);
+    //Then
+    result.Should().Be("Fizz");
+}
+```
+
+### Green
+
+* Change `FizzBuzzService.GetAnswer()` to the following code:
+
+```c#
+public string GetAnswer(int number)
+{
+  if (number > 0 && number % 5 == 0) { return "FizzBuzz"; }
+  if (number > 0 && number % 3 == 0) { return "Fizz"; }
+  if (number >= 0) return number.ToString();
+  return "Invalid";
+}
+```
+
+### Refactor
+
+* Change `FizzBuzzService.GetAnswer()` to the following code:
+
+```c#
+public string GetAnswer(int number)
+{
+    if (number >= 0) {
+        if (number % 5 == 0) return "FizzBuzz";
+        if (number % 3 == 0) return "Fizz";
+        return number.ToString();
+    }
+    return "Invalid";
+}
+```
+
+* Rename `FizzBuzzService_GetAnswer_Tests.TestName` to `Should_Return_Fizz_When_Passed_Value_Divisible_By_Only_3`
+* Rename `FizzBuzz_GET_Route.TestNameAsync` to `Should_Return_Fizz_When_Passed_Value_Divisible_By_Only_3_Async`
+* Rerun tests

@@ -20,7 +20,7 @@ namespace FizzBuzz.Tests.FizzBuzzService_UnitTests
         }
 
         [Fact]
-        public void Should_Return_0_When_Parameter_Is_0()
+        public void Should_Return_FizzBuzz_When_Parameter_Is_0()
         {
             //Given
 
@@ -28,7 +28,7 @@ namespace FizzBuzz.Tests.FizzBuzzService_UnitTests
             var result = SUT.GetAnswer(0);
 
             //Then
-            result.Should().Be("0");
+            result.Should().Be("FizzBuzz");
         }
 
         [Fact]
@@ -51,12 +51,28 @@ namespace FizzBuzz.Tests.FizzBuzzService_UnitTests
         public void Should_Return_FizzBuzz_When_Parameter_Is_Divisible_By_3_And_5(int value)
         {
             //Given
-            
+
             //When
             var result = SUT.GetAnswer(value);
 
             //Then
             result.Should().Be("FizzBuzz");
+        }
+
+        [Theory]
+        [InlineData(3)]
+        [InlineData(6)]
+        [InlineData(9)]
+        [InlineData(12)]
+        public void Should_Return_Fizz_When_Passed_Value_Divisible_By_Only_3(int value)
+        {
+            //Given
+
+            //When
+            var result = SUT.GetAnswer(value);
+
+            //Then
+            result.Should().Be("Fizz");
         }
     }
 }

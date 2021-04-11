@@ -98,6 +98,22 @@ namespace FizzBuzz.Tests
             //THEN the response body should return fizzbuzz in the body of the response.
             result.Should().Be("FizzBuzz");
         }
+
+        [Theory]
+        [InlineData(3)]
+        [InlineData(6)]
+        [InlineData(9)]
+        [InlineData(12)]
+        public async Task Should_Return_Fizz_When_Passed_Value_Divisible_By_Only_3_Async(int value)
+        {
+            //GIVEN the service is running 
+            //WHEN a GET request is submitted to api/fizzbuzz with a positive number parameter that is a multiple of just 3
+            var response = await client.GetAsync($"/api/fizzbuzz/{value}");
+            var result = await response.Content.ReadAsStringAsync();
+            
+            //THEN the response body should return fizz in the body of the response.
+            result.Should().Be("Fizz");
+        }
     }
 }
 
