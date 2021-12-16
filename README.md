@@ -13,7 +13,7 @@
     dotnet sln add ./FizzBuzz.Tests/FizzBuzz.Tests.csproj
     dotnet add ./FizzBuzz.Tests/FizzBuzz.Tests.csproj reference ./FizzBuzz.WebApi/FizzBuzz.WebApi.csproj
     cd FizzBuzz.Tests
-    dotnet add package Microsoft.AspNetCore.TestHost
+    dotnet add package Microsoft.AspNetCore.Mvc.Testing
     dotnet add package FluentAssertions
     ```
 
