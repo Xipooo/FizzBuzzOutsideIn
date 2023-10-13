@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
 
 namespace FizzBuzz.WebApi
@@ -29,6 +30,7 @@ namespace FizzBuzz.WebApi
         {
             services.AddTransient<IFizzBuzzService, FizzBuzzService>();
             services.AddControllers();
+            services.AddFeatureManagement();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FizzBuzz.WebApi", Version = "v1" });
